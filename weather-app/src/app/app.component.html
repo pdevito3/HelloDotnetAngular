@@ -1,7 +1,8 @@
-
-<main class="text-purple-500 font-bold text-xl p-10">
-  hello angular
-</main>
-
-
-<router-outlet />
+<h1>Main App Component -- {{ title }}</h1>
+<div class="py-3 px-2">
+  <h2>Here's the weather component pulling data from the .net api</h2>
+  <div class="p-3 border rounded-md shadow">
+    <app-weather></app-weather>
+  </div>
+</div>
+<router-outlet></router-outlet>

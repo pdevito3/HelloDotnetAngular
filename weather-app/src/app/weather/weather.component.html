@@ -1,0 +1,13 @@
+
+<div *ngIf="query.isPending()">Loading...</div>
+<div *ngIf="query.error()">
+  An error has occurred: {{ query.error()?.message }}
+</div>
+<div *ngIf="query.data() as data">
+  <ul class="space-y-4">
+    <li *ngFor="let item of data">
+      Date: {{ item.date }}, Temperature (C): {{ item.temperatureC }},
+      Temperature (F): {{ item.temperatureF }}, Summary: {{ item.summary }}
+    </li>
+  </ul>
+</div>
