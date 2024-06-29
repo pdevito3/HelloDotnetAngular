@@ -22,14 +22,39 @@ builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/*
+💡 This is where we are adding CORS (Cross-Origin Resource Sharing) to our application. This is what allows
+our Angular app to make requests to our .NET API. We are only adding CORS in the development environment
+because we don't want to expose our API to the world in production. We are allowing any origin to make requests
+to our API, but you will want to be more restrictive in a production environment to just allow your Angular app
+to make requests to your API (and maybe some other trusted origins)
+ */
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("MyCorsPolicy", policy => 
+            policy.SetIsOriginAllowed(_ => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+    });
+}
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+/*
+💡 This is where we configure our middleware. Middleware is essentially a pipeline that our requests go through
+before they hit our endpoints. We can add middleware to do things like logging, authentication, and authorization
+before our requests hit our endpoints. In this case, we are adding middleware to serve the Swagger UI and the
+Swagger JSON file that describes our API. We are also adding middleware to handle CORS requests
+ */
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("MyCorsPolicy");
 
 app.UseHttpsRedirection();
 
